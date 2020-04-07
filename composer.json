@@ -1,0 +1,30 @@
+{
+    "name": "fengxin2017/ding",
+    "description": "dingding",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "fengxin2017",
+            "email": "2169046620@qq.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "illuminate/config": "^5.8|^6.0|^7.0",
+        "illuminate/support": "^5.8|^6.0|^7.0",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fengxin2017\\Ding\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Fengxin2017\\Ding\\DingServiceProvider"
+            ]
+        }
+    }
+}
