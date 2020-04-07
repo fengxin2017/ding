@@ -57,10 +57,12 @@ ding()->setToken()->setSecret()->exception(new Exception('异常'));
 
 ### DINGDING自定义机器人调用
 ```
-// 随便创建一个类继承 App\Ding\Bot 就行啥都不用写。类名用config/ding.php的key的驼峰写法
+// 创建类继承 Fengxin2017\Ding\Bot。
+// 类名用config/ding.php的key的驼峰写法
+
 <?php
 namespace App\Ding\Bots;
-use App\Ding\Bot;
+use Fengxin2017\Ding\Bot;
 
 class MoneyMaker extends Bot
 {
@@ -89,7 +91,7 @@ TomDawn::setTitle('xxx')
 
 ### Facade调用
 ```
-use App\Facade\Ding;
+use Fengxin2017\Ding\Facade\Ding;
 
 Ding::text('默认机器人是我');
 Ding::moneyMaker()->text('我是moneyMaker');
