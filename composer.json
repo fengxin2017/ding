@@ -18,8 +18,12 @@
     "autoload": {
         "psr-4": {
             "Fengxin2017\\Ding\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
+
     "extra": {
         "laravel": {
             "providers": [
