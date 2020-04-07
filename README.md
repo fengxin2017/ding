@@ -8,7 +8,7 @@
 ```shell
 $ composer require fengxin2017/ding -vvv
 
-$ php artisan vendor:publish --provider="Fengxin2017\Ding\DingServiceProvider"
+$ php artisan vendor:publish --provider="Fengxin2017\Ding\DingServiceProvider" --tag="config"
 ```
 
 ## Usage
