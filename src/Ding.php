@@ -259,7 +259,7 @@ class Ding implements CoreContract
      * @param string $contentType
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
-    protected function ding(string $type, $content,$contentType = 'content')
+    protected function ding(string $type, $content, $contentType = 'content')
     {
         if ($type === 'markdown') {
             $contentType = 'text';
@@ -365,12 +365,8 @@ class Ding implements CoreContract
         $hostName = gethostname();
         $env = app()->environment();
 
-        if ($this->getTrace()) {
-            $explode = explode("\n", $exception->getTraceAsString());
-            array_unshift($explode, '');
-        } else {
-            $explode = '';
-        }
+        $explode = explode("\n", $exception->getTraceAsString());
+        array_unshift($explode, '');
 
         $limit = $this->getLimit() && $this->reportFrequency;
 
@@ -390,8 +386,15 @@ class Ding implements CoreContract
             ['异常描述', $message,],
             ['当前播报限制', $limit ? '开启(每'.$reportFrequency.'s 一次)' : '关闭',],
             ['参考位置', sprintf('%s:%d', str_replace([app()->basePath(), '\\'], ['', '/'], $file), $line),],
-            ['堆栈信息', PHP_EOL.'>'.implode(PHP_EOL.'> - ', $explode),],
         ];
+
+        if ($this->getTrace()) {
+            $messageBody[] = [
+                '堆栈信息',
+                PHP_EOL.'>'.implode(PHP_EOL.'> - ', $explode),
+            ];
+        }
+
         $messageBody = array_map(function ($item) {
             [$key, $val] = $item;
 
