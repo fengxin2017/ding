@@ -1,9 +1,8 @@
 <?php
 
-namespace Fengxin2017\Ding\Contracts;
+namespace Fengxin2017\Ding;
 
 use Exception;
-use Fengxin2017\Ding\Ding;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
@@ -23,7 +22,7 @@ use ReflectionMethod;
  * @method static string getTitle()
  * @method static Fengxin2017\Ding\Ding setDescription(string $description)
  * @method static string getDescription()
- * @method staticFengxin2017\Ding\Ding setTrace(boole $trace)
+ * @method static Fengxin2017\Ding\Ding setTrace(bool $trace)
  * @method static string getTrace()
  * @method static Fengxin2017\Ding\Ding setLimit(bool $limit)
  * @method static string getLimit()
