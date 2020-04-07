@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Facade;
+namespace Fengxin2017\Ding\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
