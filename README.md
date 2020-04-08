@@ -1,6 +1,6 @@
-<h1 align="center"> Ding </h1>
+<h1 align="center"> Laravel - Ding </h1>
 
-<p align="center"> dingding.</p>
+<p align="center"></p>
 
 
 ## Installing
