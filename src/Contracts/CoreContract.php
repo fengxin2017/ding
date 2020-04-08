@@ -89,16 +89,16 @@ interface CoreContract
     public function getReportFrequency(): int;
 
     /**
-     * @param $text
+     * @param string $text
      * @return mixed
      */
-    public function text($text);
+    public function text(string $text);
 
     /**
-     * @param $markdown
+     * @param string $markdown
      * @return mixed
      */
-    public function markdown($markdown);
+    public function markdown(string $markdown);
 
     /**
      * @param \Exception $exception

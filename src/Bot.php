@@ -65,7 +65,7 @@ abstract class Bot
     public function __call(string $method, array $params)
     {
         if (! in_array($method, $this->validMethods())) {
-            throw new Exception('call to undefine method '.$method);
+            throw new Exception('call to undefined method '.$method);
         }
 
         return $this->forwardCallTo($this->getTheExactCore(), $method, $params);
@@ -117,7 +117,7 @@ abstract class Bot
      *
      * @return mixed
      */
-    public static function __callStatic($method, $params)
+    public static function __callStatic(string $method, array $params)
     {
         return (new static())->$method(...$params);
     }

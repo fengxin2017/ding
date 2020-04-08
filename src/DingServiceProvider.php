@@ -7,13 +7,8 @@ use Illuminate\Support\ServiceProvider;
 
 class DingServiceProvider extends ServiceProvider
 {
-    /**
-     * Register the service provider.
-     */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/ding.php', 'ding');
-
         $this->app->bind('ding', function ($app, $params) {
             return new Ding($params);
         });
@@ -23,8 +18,12 @@ class DingServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/ding.php' => config_path('ding.php'),
-        ], 'config');
+        if ($this->app->runningInConsole() && function_exists('config_path')) {
+            $this->publishes([
+                __DIR__.'/../config/ding.php' => config_path('ding.php'),
+            ], 'config');
+        }
+
+        $this->mergeConfigFrom(__DIR__.'/../config/ding.php', 'ding');
     }
 }

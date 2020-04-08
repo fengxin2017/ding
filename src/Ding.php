@@ -248,18 +248,18 @@ class Ding implements CoreContract
      * @return mixed|void
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
-    public function text($text)
+    public function text(string $text)
     {
         return $this->ding('text', $text);
     }
 
     /**
      * @param string $type
-     * @param $content
+     * @param string $content
      * @param string $contentType
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
-    protected function ding(string $type, $content, $contentType = 'content')
+    protected function ding(string $type, string $content, string $contentType = 'content')
     {
         if ($type === 'markdown') {
             $contentType = 'text';
@@ -296,11 +296,11 @@ class Ding implements CoreContract
     }
 
     /**
-     * @param array $markdown
+     * @param string $markdown
      * @return mixed|void
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
-    public function markdown($markdown)
+    public function markdown(string $markdown)
     {
         return $this->ding('markdown', $markdown);
     }
@@ -348,7 +348,7 @@ class Ding implements CoreContract
      * @param $exception
      * @return array|string
      */
-    protected function formatToMarkdown($exception)
+    protected function formatToMarkdown(Exception $exception)
     {
         /** @var Exception $exception */
         $class = get_class($exception);
@@ -407,11 +407,11 @@ class Ding implements CoreContract
 
     /**
      * @param string $name
-     * @param $parameters
+     * @param array $parameters
      * @return $this
      * @throws \Exception
      */
-    public function __call(string $name, $parameters)
+    public function __call(string $name, array $parameters)
     {
         if ($config = Config::get('ding.'.Str::snake($name))) {
             $this->token = $config['token'] ?? $this->token;
