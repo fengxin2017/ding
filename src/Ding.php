@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * Class Ding
@@ -18,6 +19,10 @@ use Illuminate\Support\Str;
  */
 class Ding implements CoreContract
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * @var string $token
      */
@@ -276,11 +281,16 @@ class Ding implements CoreContract
 
     /**
      * @param array $msg
+     * @return mixed
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
-    function sendDingTalkRobotMessage(array $msg)
+    public function sendDingTalkRobotMessage(array $msg)
     {
         try {
+            if (static::hasMacro('sendMessage')) {
+                return $this->macroCall('sendMessage', $msg);
+            }
+
             $timestamp = (string) (time() * 1000);
             $secret = $this->getSecret();
             $token = $this->getToken();
@@ -406,14 +416,18 @@ class Ding implements CoreContract
     }
 
     /**
-     * @param string $name
+     * @param string $method
      * @param array $parameters
      * @return $this
      * @throws \Exception
      */
-    public function __call(string $name, array $parameters)
+    public function __call(string $method, array $parameters)
     {
-        if ($config = Config::get('ding.'.Str::snake($name))) {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        if ($config = Config::get('ding.'.Str::snake($method))) {
             $this->token = $config['token'] ?? $this->token;
             $this->secret = $config['secret'] ?? $this->secret;
             $this->title = $config['title'] ?? $this->title;
@@ -424,6 +438,7 @@ class Ding implements CoreContract
 
             return $this;
         }
-        throw new Exception('call to undefined function '.$name);
+
+        throw new Exception('call to undefined function '.$method);
     }
 }
