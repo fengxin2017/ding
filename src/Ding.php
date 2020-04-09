@@ -281,7 +281,7 @@ class Ding implements CoreContract
 
     /**
      * @param array $msg
-     * @return mixed
+     * @return bool|mixed
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
     public function sendDingTalkRobotMessage(array $msg)
@@ -300,6 +300,8 @@ class Ding implements CoreContract
             if (! isset($result['errcode']) || $result['errcode']) {
                 throw new DingRequestException('DingTalk: send robot message fail, "errcode" is NOT 0, response body is '.$result);
             }
+
+            return true;
         } catch (Exception $exception) {
             throw new DingRequestException('DingTalk: send robot message fail, '.$exception->getMessage(), $exception->getCode(), $exception);
         }
