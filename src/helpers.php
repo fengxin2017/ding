@@ -1,17 +1,20 @@
 <?php
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+
 if (! function_exists('ding')) {
     /**
-     * @param array $params
+     * @param $params
      *
      * @return Fengxin2017\Ding\Ding
      */
-    function ding(array $params = [])
+    function ding($params = [])
     {
         if (is_string($params)) {
-            $params = config('ding.'.$params);
+            $params = Config::get('ding.'.$params);
         }
 
-        return app('ding', $params);
+        return App::make('ding', $params);
     }
 }
