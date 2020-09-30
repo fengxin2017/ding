@@ -9,11 +9,11 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": ">=7.2",
         "ext-json": "*",
-        "illuminate/config": "^5.8|^6.0|^7.0",
-        "illuminate/support": "^5.8|^6.0|^7.0",
-        "guzzlehttp/guzzle": "^6.5"
+        "illuminate/config": ">=5.8",
+        "illuminate/support": ">=5.8",
+        "guzzlehttp/guzzle": ">=6.5"
     },
     "autoload": {
         "psr-4": {
