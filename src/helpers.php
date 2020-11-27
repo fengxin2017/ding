@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
-if (! function_exists('ding')) {
+if (!function_exists('ding')) {
     /**
      * @param $params
      *

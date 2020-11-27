@@ -13,9 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 
 /**
- * Class Ding
- *
- * @package App\Ding
+ * Class Ding.
  */
 class Ding implements CoreContract
 {
@@ -24,32 +22,32 @@ class Ding implements CoreContract
     }
 
     /**
-     * @var string $token
+     * @var string
      */
     protected $token;
 
     /**
-     * @var string $secret
+     * @var string
      */
     protected $secret;
 
     /**
-     * @var string $title
+     * @var string
      */
     protected $title;
 
     /**
-     * @var string $description
+     * @var string
      */
     protected $description;
 
     /**
-     * @var bool $trace
+     * @var bool
      */
     protected $trace;
 
     /**
-     * @var bool $limit
+     * @var bool
      */
     protected $limit;
 
@@ -59,17 +57,17 @@ class Ding implements CoreContract
     protected $reportFrequency;
 
     /**
-     * @var array $defaultConfig
+     * @var array
      */
     protected $defaultConfig;
 
     /**
-     * @var string $apiUrl
+     * @var string
      */
     protected $apiUrl;
 
     /**
-     * @var \GuzzleHttp\Client $client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
@@ -82,10 +80,10 @@ class Ding implements CoreContract
     {
         $this->apiUrl = Config::get('ding.ding-api-url', 'https://oapi.dingtalk.com/robot/send?access_token=%s&timestamp=%s&sign=%s');
         $this->client = new Client([
-            'timeout' => Config::get('ding.request_timeout', 10),
+            'timeout'         => Config::get('ding.request_timeout', 10),
             'connect_timeout' => Config::get('ding.connect_timeout', 30),
-            'http_errors' => Config::get('ding.http_errors', false),
-            'verify' => Config::get('ding.verify', false),
+            'http_errors'     => Config::get('ding.http_errors', false),
+            'verify'          => Config::get('ding.verify', false),
         ]);
 
         $this->defaultConfig = $this->getDefaultConfig();
@@ -116,6 +114,7 @@ class Ding implements CoreContract
 
     /**
      * @param string $token
+     *
      * @return $this
      */
     public function setToken(string $token): self
@@ -135,6 +134,7 @@ class Ding implements CoreContract
 
     /**
      * @param string $secret
+     *
      * @return $this
      */
     public function setSecret(string $secret): self
@@ -154,6 +154,7 @@ class Ding implements CoreContract
 
     /**
      * @param string $title
+     *
      * @return $this|mixed
      */
     public function setTitle(string $title)
@@ -201,6 +202,7 @@ class Ding implements CoreContract
 
     /**
      * @param bool $trace
+     *
      * @return $this
      */
     public function setTrace(bool $trace): self
@@ -212,6 +214,7 @@ class Ding implements CoreContract
 
     /**
      * @param bool $limit
+     *
      * @return $this
      */
     public function setLimit(bool $limit): self
@@ -231,6 +234,7 @@ class Ding implements CoreContract
 
     /**
      * @param int $reportFrequency
+     *
      * @return $this|mixed
      */
     public function setReportFrequency(int $reportFrequency): self
@@ -250,8 +254,10 @@ class Ding implements CoreContract
 
     /**
      * @param string $text
-     * @return mixed|void
+     *
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
+     *
+     * @return mixed|void
      */
     public function text(string $text)
     {
@@ -262,6 +268,7 @@ class Ding implements CoreContract
      * @param string $type
      * @param string $content
      * @param string $contentType
+     *
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
      */
     protected function ding(string $type, string $content, string $contentType = 'content')
@@ -272,8 +279,8 @@ class Ding implements CoreContract
 
         $this->sendDingTalkRobotMessage([
             'msgtype' => $type,
-            $type => [
-                'title' => $this->title,
+            $type     => [
+                'title'      => $this->title,
                 $contentType => $content,
             ],
         ]);
@@ -281,8 +288,10 @@ class Ding implements CoreContract
 
     /**
      * @param array $msg
-     * @return bool|mixed
+     *
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
+     *
+     * @return bool|mixed
      */
     public function sendDingTalkRobotMessage(array $msg)
     {
@@ -297,7 +306,7 @@ class Ding implements CoreContract
             $sign = urlencode(base64_encode(hash_hmac('sha256', $timestamp."\n".$secret, $secret, true)));
             $response = $this->client->post(sprintf($this->apiUrl, $token, $timestamp, $sign), ['json' => $msg]);
             $result = json_decode($response->getBody(), true);
-            if (! isset($result['errcode']) || $result['errcode']) {
+            if (!isset($result['errcode']) || $result['errcode']) {
                 throw new DingRequestException('DingTalk: send robot message fail, "errcode" is NOT 0, response body is '.$result);
             }
 
@@ -309,8 +318,10 @@ class Ding implements CoreContract
 
     /**
      * @param string $markdown
-     * @return mixed|void
+     *
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
+     *
+     * @return mixed|void
      */
     public function markdown(string $markdown)
     {
@@ -319,26 +330,29 @@ class Ding implements CoreContract
 
     /**
      * @param \Exception $exception
-     * @return mixed|void
+     *
      * @throws \Fengxin2017\Ding\Exceptions\DingRequestException
+     *
+     * @return mixed|void
      */
     public function exception(Exception $exception)
     {
-        if (! $this->shouldReport($exception)) {
+        if (!$this->shouldReport($exception)) {
             return;
         }
 
         $this->sendDingTalkRobotMessage([
-            'msgtype' => 'markdown',
+            'msgtype'  => 'markdown',
             'markdown' => [
                 'title' => $this->title,
-                'text' => $this->formatToMarkdown($exception),
+                'text'  => $this->formatToMarkdown($exception),
             ],
         ]);
     }
 
     /**
      * @param \Exception $exception
+     *
      * @return bool
      */
     protected function shouldReport(Exception $exception): bool
@@ -358,6 +372,7 @@ class Ding implements CoreContract
 
     /**
      * @param $exception
+     *
      * @return array|string
      */
     protected function formatToMarkdown(Exception $exception)
@@ -385,19 +400,19 @@ class Ding implements CoreContract
         $reportFrequency = $this->limit ? $this->reportFrequency : null;
 
         $messageBody = [
-            ['描述', $this->description,],
-            ['主机名称', $hostName,],
-            ['环境', $env,],
-            ['类名', $class,],
-            ['请求IP', $ip,],
-            ['请求参数', $params,],
-            ['时间', $time,],
-            ['请求方式', $method,],
-            ['请求地址', $fullUrl,],
-            ['用户代理', $userAgent,],
-            ['异常描述', $message,],
-            ['当前播报限制', $limit ? '开启(每'.$reportFrequency.'s 一次)' : '关闭',],
-            ['参考位置', sprintf('%s:%d', str_replace([app()->basePath(), '\\'], ['', '/'], $file), $line),],
+            ['描述', $this->description],
+            ['主机名称', $hostName],
+            ['环境', $env],
+            ['类名', $class],
+            ['请求IP', $ip],
+            ['请求参数', $params],
+            ['时间', $time],
+            ['请求方式', $method],
+            ['请求地址', $fullUrl],
+            ['用户代理', $userAgent],
+            ['异常描述', $message],
+            ['当前播报限制', $limit ? '开启(每'.$reportFrequency.'s 一次)' : '关闭'],
+            ['参考位置', sprintf('%s:%d', str_replace([app()->basePath(), '\\'], ['', '/'], $file), $line)],
         ];
 
         if ($this->getTrace()) {
@@ -419,9 +434,11 @@ class Ding implements CoreContract
 
     /**
      * @param string $method
-     * @param array $parameters
-     * @return $this
+     * @param array  $parameters
+     *
      * @throws \Exception
+     *
+     * @return $this
      */
     public function __call(string $method, array $parameters)
     {

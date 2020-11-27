@@ -31,8 +31,6 @@ use ReflectionMethod;
  *
  * @see Fengxin2017\Ding\Ding
  * Class Bot
- *
- * @package App\Ding
  */
 abstract class Bot
 {
@@ -58,13 +56,15 @@ abstract class Bot
 
     /**
      * @param string $method
-     * @param array $params
-     * @return mixed
+     * @param array  $params
+     *
      * @throws \ReflectionException|\Exception
+     *
+     * @return mixed
      */
     public function __call(string $method, array $params)
     {
-        if (! in_array($method, $this->validMethods())) {
+        if (!in_array($method, $this->validMethods())) {
             throw new Exception('call to undefined method '.$method);
         }
 
@@ -72,15 +72,16 @@ abstract class Bot
     }
 
     /**
-     * @return array
      * @throws \ReflectionException
+     *
+     * @return array
      */
     protected function validMethods(): array
     {
-        if (! static::$validMethods) {
+        if (!static::$validMethods) {
             foreach ((new ReflectionClass(Ding::class))->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
                 $methodName = $method->getName();
-                if (! in_array($methodName, ['__construct', '__call'])) {
+                if (!in_array($methodName, ['__construct', '__call'])) {
                     static::$validMethods[] = $methodName;
                 }
             }
@@ -113,7 +114,7 @@ abstract class Bot
 
     /**
      * @param string $method
-     * @param array $params
+     * @param array  $params
      *
      * @return mixed
      */
